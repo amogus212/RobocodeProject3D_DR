@@ -5,11 +5,13 @@ using UnityEngine;
 public class TriggerButton : MonoBehaviour
 {
     //0 - Door
+    //1 - Gun
     public int mode;
     public GameObject Door;
     public GameObject Player;
     public float Range;
     public float MoveMult;
+    public GameObject Gun;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +25,14 @@ public class TriggerButton : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, Player.transform.position) < Range)
             {
-                StartCoroutine(LowerDoor());
+                if (mode == 0)
+                {
+                    StartCoroutine(LowerDoor());
+                }else if (mode == 1)
+                {
+                    Gun.SetActive(true);
+                    gameObject.SetActive(false);
+                }
             }
         }
     }

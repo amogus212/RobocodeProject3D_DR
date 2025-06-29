@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
     }
     void Death()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 
     void FixedUpdate()
