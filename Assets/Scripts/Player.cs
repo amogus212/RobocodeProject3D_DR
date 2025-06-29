@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
@@ -16,7 +17,9 @@ public class Player : MonoBehaviour
 
     private bool Crouching;
 
-    private int HP = 100;
+    private bool CanDamage = true;
+
+    public int HP = 100;
 
     public GameObject SmallPLayer;
     void Start()
@@ -58,6 +61,14 @@ public class Player : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
+        if (HP <= 0)
+        {
+            Death();
+        }
+    }
+    void Death()
+    {
+        SceneManager.LoadScene(1);
     }
 
     void FixedUpdate()
@@ -96,6 +107,21 @@ public class Player : MonoBehaviour
             }
         }
         isGrounded = false;
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            if (CanDamage)
+            {
+                StartCoroutine(Damage());
+            }
+        }
+    }
+    public IEnumerator Damage()
+    {
+        HP -= 25;
+        CanDamage = false;
+        yield return new WaitForSeconds(0.2f);
+        CanDamage = true;
     }
 
     void OnCollisionExit(Collision collision)
